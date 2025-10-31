@@ -1,0 +1,7 @@
+{
+  "name": "Copy of US University Explorer",
+  "description": "An interactive application to explore universities across the United States. Features a filterable list with real-time local information, and a map view to visualize locations. Includes an AI-powered feature to discover nearby places around each campus.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
