@@ -4,9 +4,9 @@ This document outlines the future direction and potential features for the US Un
 
 ---
 
-## 短期 (Short-Term: Next 1-3 Months)
+## Short-Term (Immediate Polish)
 
-These are immediate goals focused on polishing the existing application and improving the core user experience.
+These are goals focused on improving the existing application and user experience.
 
 -   **[UI/UX] Accessibility Improvements**:
     -   Conduct a full accessibility audit (WCAG).
@@ -15,21 +15,25 @@ These are immediate goals focused on polishing the existing application and impr
 
 -   **[AI] Prompt Engineering & Refinement**:
     -   Experiment with different prompts for the `AdmissionRequirementsModal` to improve the consistency and accuracy of the JSON output.
-    -   Add logic to handle cases where the model returns an error or refuses the request.
+    -   Add more robust logic to handle cases where the model returns an error or refuses the request.
 
--   **[Feature] Persist User Settings & Cache**:
-    -   Use `localStorage` to save the user's selected state filters between browser sessions.
-    -   Remember the user's last active tab (List or Map View).
-    -   Persist the client-side AI search cache in `localStorage` so that results are not lost on page refresh.
+-   **[Feature] Persist User Settings**:
+    -   Use `localStorage` to save the user's selected state filters and active tab (List/Map) between browser sessions.
+    -   **Note**: Persisting the AI cache in `localStorage` can also be done but will be superseded by the medium-term backend goal.
 
 -   **[Performance] List View Optimization**:
     -   Implement list virtualization (windowing) for the university card list to improve performance when displaying a very large number of universities.
 
 ---
 
-## 中期 (Medium-Term: Next 3-9 Months)
+## Medium-Term (Major New Features)
 
-These goals involve adding significant new features that expand the application's capabilities.
+These goals involve adding significant new features that expand the application's capabilities, with a focus on a shared backend.
+
+-   **[Data] Shared, Persistent Caching via Backend**:
+    -   **This is the most critical next step.** Transition the current, temporary client-side cache to a shared, persistent backend cache.
+    -   **Implementation**: Use a Backend-as-a-Service (BaaS) platform like **Firebase (Firestore)** or **Supabase**.
+    -   **Benefit**: This will allow all users to benefit from previous searches made by anyone, making the app significantly faster for everyone and drastically reducing the total number of Gemini API calls. The cache will also persist between sessions.
 
 -   **[Feature] Advanced Filtering & Sorting**:
     -   Add a "Sort By" option (e.g., alphabetically, by state).
@@ -39,11 +43,6 @@ These goals involve adding significant new features that expand the application'
     -   Allow users to select up to 3-4 universities.
     -   Display the AI-fetched admission requirements for the selected universities in a side-by-side table for easy comparison.
 
--   **[Data] Dynamic Data Source & Shared Caching**:
-    -   Migrate the static `universityData.ts` to a backend solution (e.g., Firebase, Supabase).
-    -   **Implement a shared, persistent cache for AI search results in the backend database.** This would allow all users to benefit from previous searches, significantly improving speed and reducing overall API usage.
-    -   This backend would also allow for real-time updates to the university list without requiring a code deployment.
-
 -   **[Feature] User Accounts**:
     -   Implement user authentication (e.g., using Firebase Authentication).
     -   Allow logged-in users to save a list of "favorite" universities.
@@ -51,7 +50,7 @@ These goals involve adding significant new features that expand the application'
 
 ---
 
-## 长期 (Long-Term: Vision)
+## Long-Term (Vision)
 
 These are ambitious, long-term goals that would transform the application into a comprehensive platform for prospective students.
 

@@ -7,7 +7,7 @@ A modern, interactive web application designed to help prospective students and 
 ## Key Features
 
 -   **Interactive Dual View**: Seamlessly switch between a detailed **List View** and a geographic **Map View** to visualize university locations.
--   **Dynamic State Filtering**: Easily filter universities by one or more states using a modern, searchable multi-select dropdown.
+-   **Modern State Filtering**: Easily filter universities by one or more states using an integrated, searchable sidebar panel.
 -   **Real-Time Local Clocks**: Each university card displays the institution's current local time, calculated based on its longitude.
 -   **Smart Mailing Status**: A color-coded label on each card indicates whether it's a good time to email, a bad time, or if staff are likely asleep, helping users time their communications effectively.
 -   **AI-Powered Admission Search**: Click the "Admission Info" button on any university to trigger a Gemini API call. The AI uses Google Search to find and display detailed admission requirements for graduate programs (MS/PhD) in Statistics, Data Science, and related fields.
@@ -28,7 +28,7 @@ A modern, interactive web application designed to help prospective students and 
 
 ---
 
-## Getting Started
+## Local Development
 
 This project is designed to run in a browser-based development environment where the Gemini API key is securely managed as an environment variable (`process.env.API_KEY`).
 
@@ -48,35 +48,47 @@ This project is designed to run in a browser-based development environment where
 
 ---
 
-## Project Structure
+## Deployment
 
-The project follows a standard React component-based architecture:
+The application is a static site and can be easily deployed to modern hosting platforms.
+
+### Recommended Platforms
+-   **Vercel**
+-   **Netlify**
+-   **AWS Amplify**
+-   **Cloudflare Pages**
+
+### Environment Variables
+For the AI search functionality to work, you **must** configure the Gemini API key as an environment variable on your hosting platform.
+
+-   **Variable Name**: `API_KEY`
+-   **Value**: Your secret Gemini API key.
+
+In Vercel, for example, you would go to your Project Settings > Environment Variables and add `API_KEY` with your key's value. The application code (`process.env.API_KEY`) will automatically use this key in the deployed environment.
+
+---
+
+## Project Structure
 
 ```
 .
 ├── docs/
-│   ├── ARCHITECTURE.md  # Detailed technical architecture
-│   ├── README.md        # This file
-│   └── ROADMAP.md       # Future plans and features
+│   ├── ARCHITECTURE.md
+│   ├── README.md
+│   └── ROADMAP.md
 ├── components/
-│   ├── AdmissionRequirementsModal.tsx # AI-powered modal for fetching data
-│   ├── MapView.tsx                     # Leaflet map component
-│   ├── StateFilter.tsx                 # Sidebar filter component
-│   ├── UniversityCard.tsx              # Card for the list view
-│   └── icons.tsx                       # Reusable SVG icon components
+│   ├── AdmissionRequirementsModal.tsx
+│   ├── MapView.tsx
+│   ├── StateFilter.tsx
+│   ├── UniversityCard.tsx
+│   └── icons.tsx
 ├── hooks/
-│   └── useLocalTime.ts    # Custom hook for local time calculation
+│   └── useLocalTime.ts
 ├── utils/
-│   └── location.ts        # Utility functions (e.g., getUniqueStates)
-├── App.tsx                # Main application component, manages state and layout
-├── index.html             # Entry point, loads scripts and styles
-├── index.tsx              # Mounts the React application
-├── universityData.ts      # Static university data source
-└── types.ts               # Shared TypeScript types and interfaces
+│   └── location.ts
+├── App.tsx
+├── index.html
+├── index.tsx
+├── universityData.ts
+└── types.ts
 ```
-
----
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
