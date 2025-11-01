@@ -11,7 +11,7 @@ A modern, interactive web application designed to help prospective students and 
 -   **Real-Time Local Clocks**: Each university card displays the institution's current local time, calculated based on its longitude.
 -   **Smart Mailing Status**: A color-coded label on each card indicates whether it's a good time to email, a bad time, or if staff are likely asleep, helping users time their communications effectively.
 -   **AI-Powered Admission Search**: Click the "Admission Info" button on any university to trigger a Gemini API call. The AI uses Google Search to find and display detailed admission requirements for graduate programs (MS/PhD) in Statistics, Data Science, and related fields.
--   **Intelligent Caching**: AI search results are cached after the first request. Subsequent views of the same university's admission info are instantaneous, improving performance and reducing redundant API calls. A "Search Again" button allows for fetching fresh data when needed.
+-   **Shared, Persistent Caching**: AI search results are saved to a shared **Firebase Firestore** database. When one user searches for a university, the results are cached on the backend, making subsequent searches for that same university instantaneous for **all users**. This improves performance, reduces redundant API calls, and creates a collaborative data-gathering experience.
 -   **Formatted Data Table**: The AI-generated admission data is presented in a clean, scrollable, and easy-to-read table.
 -   **Copy to Clipboard**: A convenient "Copy Table" button allows users to export the admission data for use in spreadsheets or other documents.
 -   **Responsive Design**: A polished, dark-mode UI that is fully responsive and works beautifully on devices of all sizes.
@@ -22,6 +22,7 @@ A modern, interactive web application designed to help prospective students and 
 
 -   **Frontend Framework**: [React](https://reactjs.org/) (v19) with [TypeScript](https://www.typescriptlang.org/) for robust, type-safe component development.
 -   **Styling**: [Tailwind CSS](https://tailwindcss.com/) for a utility-first, responsive, and highly customizable design system.
+-   **Database & Caching**: [Firebase Firestore](https://firebase.google.com/docs/firestore) for a persistent, shared, NoSQL database to cache AI search results.
 -   **Mapping Library**: [Leaflet.js](https://leafletjs.com/) for the lightweight and interactive map view.
 -   **AI & Search**: [Google Gemini API](https://ai.google.dev/) (`gemini-2.5-pro` model) with **Google Search grounding** for fetching real-time, accurate information from the web.
 -   **Development Environment**: The application is built to run in a modern browser environment that supports ES Modules and `importmap`.
@@ -30,12 +31,13 @@ A modern, interactive web application designed to help prospective students and 
 
 ## Local Development
 
-This project is designed to run in a browser-based development environment where the Gemini API key is securely managed as an environment variable (`process.env.API_KEY`).
+This project is designed to run in a browser-based development environment where the Gemini API key and Firebase configuration are securely managed.
 
 ### Prerequisites
 
 -   A modern web browser (e.g., Chrome, Firefox, Edge).
--   The `API_KEY` environment variable must be available in the execution context.
+-   The `API_KEY` environment variable must be available in the execution context for Gemini API calls.
+-   A `firebase.ts` file with a valid Firebase project configuration.
 
 ### Running the Application
 
@@ -87,6 +89,7 @@ In Vercel, for example, you would go to your Project Settings > Environment Vari
 ├── utils/
 │   └── location.ts
 ├── App.tsx
+├── firebase.ts
 ├── index.html
 ├── index.tsx
 ├── universityData.ts

@@ -19,7 +19,6 @@ These are goals focused on improving the existing application and user experienc
 
 -   **[Feature] Persist User Settings**:
     -   Use `localStorage` to save the user's selected state filters and active tab (List/Map) between browser sessions.
-    -   **Note**: Persisting the AI cache in `localStorage` can also be done but will be superseded by the medium-term backend goal.
 
 -   **[Performance] List View Optimization**:
     -   Implement list virtualization (windowing) for the university card list to improve performance when displaying a very large number of universities.
@@ -28,12 +27,7 @@ These are goals focused on improving the existing application and user experienc
 
 ## Medium-Term (Major New Features)
 
-These goals involve adding significant new features that expand the application's capabilities, with a focus on a shared backend.
-
--   **[Data] Shared, Persistent Caching via Backend**:
-    -   **This is the most critical next step.** Transition the current, temporary client-side cache to a shared, persistent backend cache.
-    -   **Implementation**: Use a Backend-as-a-Service (BaaS) platform like **Firebase (Firestore)** or **Supabase**.
-    -   **Benefit**: This will allow all users to benefit from previous searches made by anyone, making the app significantly faster for everyone and drastically reducing the total number of Gemini API calls. The cache will also persist between sessions.
+These goals involve adding significant new features that expand the application's capabilities.
 
 -   **[Feature] Advanced Filtering & Sorting**:
     -   Add a "Sort By" option (e.g., alphabetically, by state).
