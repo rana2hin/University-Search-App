@@ -5,7 +5,7 @@ import StateFilter from './components/StateFilter';
 import UniversityCard from './components/UniversityCard';
 import MapView from './components/MapView';
 import { getUniqueStates } from './utils/location';
-import { AdmissionRequirementsModal, AdmissionData } from './components/AdmissionRequirementsModal';
+import { AdmissionRequirementsModal } from './components/AdmissionRequirementsModal';
 import { MapIcon, ListBulletIcon } from './components/icons';
 
 type Tab = 'list' | 'map';
@@ -14,7 +14,6 @@ const App: React.FC = () => {
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>('list');
   const [modalData, setModalData] = useState<{ university: University } | null>(null);
-  const [cachedResults, setCachedResults] = useState<{ [key: string]: AdmissionData[] }>({});
 
   const uniqueStates = useMemo(() => getUniqueStates(universityData), []);
 
@@ -44,14 +43,6 @@ const App: React.FC = () => {
   const closeModal = useCallback(() => {
     setModalData(null);
   }, []);
-
-  const handleCacheResults = useCallback((universityName: string, data: AdmissionData[]) => {
-    setCachedResults(prev => ({
-        ...prev,
-        [universityName]: data,
-    }));
-  }, []);
-
 
   return (
     <div className="bg-gray-900 text-white min-h-screen font-sans flex flex-col md:flex-row md:h-screen md:overflow-hidden">
@@ -104,8 +95,6 @@ const App: React.FC = () => {
         <AdmissionRequirementsModal
           university={modalData.university}
           onClose={closeModal}
-          cachedData={cachedResults[modalData.university.name]}
-          onCacheResults={handleCacheResults}
         />
       )}
     </div>

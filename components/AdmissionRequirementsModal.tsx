@@ -2,20 +2,19 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { University } from '../types';
 import { XMarkIcon, AcademicCapIcon, ClipboardIcon, RefreshIcon } from './icons';
+import { db } from '../firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 interface AdmissionRequirementsModalProps {
   university: University;
   onClose: () => void;
-  cachedData?: AdmissionData[];
-  onCacheResults: (universityName: string, data: AdmissionData[]) => void;
 }
 
-export interface AdmissionData {
+interface AdmissionData {
   usRank: string;
   qsRank: string;
   universityName: string;
   deptName: string;
-  programName: string; 
   degree: string;
   url: string;
   deadline: string;
@@ -40,7 +39,6 @@ interface GroundingSource {
 const tableHeaders = [
     { key: 'universityName', label: 'University' },
     { key: 'deptName', label: 'Department' },
-    { key: 'programName', label: 'Program Name' },
     { key: 'degree', label: 'Degree' },
     { key: 'deadline', label: 'Deadline' },
     { key: 'gre', label: 'GRE' },
@@ -57,7 +55,7 @@ const tableHeaders = [
     { key: 'state', label: 'State' },
 ];
 
-export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProps> = ({ university, onClose, cachedData, onCacheResults }) => {
+export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProps> = ({ university, onClose }) => {
   const [data, setData] = useState<AdmissionData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -65,16 +63,17 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
   const [sources, setSources] = useState<GroundingSource[]>([]);
   const [isCached, setIsCached] = useState(false);
 
-  const fetchAdmissionData = useCallback(async () => {
+  const fetchAndCacheAdmissionData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
-    setIsCached(false); // Reset cache status on new fetch
+    setIsCached(false);
     setSources([]);
     let rawText = '';
     let jsonTextToParse = '';
+
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const prompt = `For ${university.name}, search for the admission requirements for MS and PhD programs in Statistics, Applied Statistics, Biostatistics, and Data Science. Do not include undergraduate programs. Format the results as a JSON array where each object represents a program and has the following keys: "usRank", "qsRank", "universityName", "deptName", "programName", "degree", "url", "deadline", "gre", "gpa", "transcriptVerification", "fund", "fee", "waiver", "gradCoName", "gradCoMail", "state". If a piece of information is not found for a program, the value for that key should be "N/A". Ensure the output is only a valid JSON string and nothing else.`;
+      const prompt = `For ${university.name}, search for the admission requirements for MS and PhD programs in Statistics, Applied Statistics, Biostatistics, and Data Science. Do not include undergraduate programs. Format the results as a JSON array where each object represents a program and has the following keys: "usRank", "qsRank", "universityName", "deptName", "degree", "url", "deadline", "gre", "gpa", "transcriptVerification", "fund", "fee", "waiver", "gradCoName", "gradCoMail", "state". If a piece of information is not found for a program, the value for that key should be "N/A". Ensure the output is only a valid JSON string and nothing else.`;
       
       const response = await ai.models.generateContent({
         model: "gemini-2.5-pro",
@@ -85,7 +84,7 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
       });
       
       rawText = response.text.trim();
-
+      
       const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
       if (groundingChunks) {
           const webSources = groundingChunks
@@ -98,7 +97,7 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
             }, []);
           setSources(webSources);
       }
-      
+
       const jsonRegex = /```json\s*([\s\S]*?)\s*```/;
       const match = rawText.match(jsonRegex);
 
@@ -120,7 +119,8 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
         setError("Could not find specific program information using the current search. You can try searching the university's website directly.");
       } else {
         setData(parsedData);
-        onCacheResults(university.name, parsedData); // Save results to cache
+        const docRef = doc(db, 'admission_data', university.name);
+        await setDoc(docRef, { requirements: parsedData });
       }
 
     } catch (e) {
@@ -131,17 +131,31 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
     } finally {
       setIsLoading(false);
     }
-  }, [university, onCacheResults]);
+  }, [university]);
 
   useEffect(() => {
-    if (cachedData) {
-        setData(cachedData);
-        setIsLoading(false);
-        setIsCached(true);
-    } else {
-        fetchAdmissionData();
-    }
-  }, [cachedData, fetchAdmissionData]);
+    const loadRequirements = async () => {
+        setIsLoading(true);
+        const docRef = doc(db, 'admission_data', university.name);
+        try {
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const firestoreData = docSnap.data().requirements as AdmissionData[];
+                setData(firestoreData);
+                setIsCached(true);
+            } else {
+                await fetchAndCacheAdmissionData();
+            }
+        } catch (e) {
+            console.error("Error accessing Firestore:", e);
+            setError("Could not connect to the database. Please check your Firebase configuration and security rules.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    loadRequirements();
+  }, [university, fetchAndCacheAdmissionData]);
   
   const handleCopy = () => {
     const tableAsString = [
@@ -168,7 +182,7 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
           </div>
           <div className="flex items-center gap-2">
             {isCached && !isLoading && (
-              <button onClick={fetchAdmissionData} className="text-sm bg-gray-700 hover:bg-gray-600 text-cyan-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2">
+              <button onClick={fetchAndCacheAdmissionData} className="text-sm bg-gray-700 hover:bg-gray-600 text-cyan-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2">
                   <RefreshIcon />
                   Search Again
               </button>
@@ -189,8 +203,8 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
           {isLoading && (
             <div className="flex flex-col items-center justify-center text-gray-400 h-96">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400 mb-4"></div>
-              <p className="text-lg">Sit Back and relax, Grab a Coffee.</p>
-              <p className="text-sm mt-2 text-gray-500">Gemini is searching... It may take a while!</p>
+              <p>Gemini is searching for admission data...</p>
+              <p className="text-xs mt-2">This may take a moment.</p>
             </div>
           )}
 
@@ -255,19 +269,21 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
             </div>
           )}
 
-          <div className="px-6 pb-4 mt-4 text-center text-xs text-gray-500 border-t border-gray-700 pt-4">
-            <p>
-                AI Search may give incorrect information. Please check in the 
-                <a 
-                    href={`//${university.website}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-cyan-500 hover:underline ml-1"
-                >
-                    Official Website
-                </a>.
-            </p>
-          </div>
+          {(!isLoading && data.length > 0) &&
+            <div className="px-6 pb-4 mt-4 text-center text-xs text-gray-500 border-t border-gray-700 pt-4">
+                <p>
+                    AI Search may give incorrect information. Please check in the 
+                    <a 
+                        href={`//${university.website}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-cyan-500 hover:underline ml-1"
+                    >
+                        Official Website
+                    </a>.
+                </p>
+            </div>
+          }
         </div>
       </div>
     </div>
