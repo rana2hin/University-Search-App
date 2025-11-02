@@ -181,7 +181,7 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
              {isCached && !isLoading && <span className="text-xs bg-gray-700 text-cyan-300 px-2 py-0.5 rounded-full">Cached</span>}
           </div>
           <div className="flex items-center gap-2">
-            {isCached && !isLoading && (
+            {data.length > 0 && !isLoading && (
               <button onClick={fetchAndCacheAdmissionData} className="text-sm bg-gray-700 hover:bg-gray-600 text-cyan-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2">
                   <RefreshIcon />
                   Search Again
@@ -268,23 +268,20 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
                 </ul>
             </div>
           )}
-
-          {(!isLoading && data.length > 0) &&
-            <div className="px-6 pb-4 mt-4 text-center text-xs text-gray-500 border-t border-gray-700 pt-4">
-                <p>
-                    AI Search may give incorrect information. Please check in the 
-                    <a 
-                        href={`//${university.website}`} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-cyan-500 hover:underline ml-1"
-                    >
-                        Official Website
-                    </a>.
-                </p>
-            </div>
-          }
         </div>
+        <footer className="flex-shrink-0 px-6 py-3 text-center text-xs text-gray-500 border-t border-gray-700">
+            <p>
+                AI Search may give incorrect information. Please check in the 
+                <a 
+                    href={`//${university.website}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-cyan-500 hover:underline ml-1"
+                >
+                    Official Website
+                </a>.
+            </p>
+        </footer>
       </div>
     </div>
   );

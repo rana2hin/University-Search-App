@@ -6,23 +6,33 @@ import UniversityCard from './components/UniversityCard';
 import MapView from './components/MapView';
 import { getUniqueStates } from './utils/location';
 import { AdmissionRequirementsModal } from './components/AdmissionRequirementsModal';
-import { MapIcon, ListBulletIcon } from './components/icons';
+import { MapIcon, ListBulletIcon, SearchIcon } from './components/icons';
 
 type Tab = 'list' | 'map';
 
 const App: React.FC = () => {
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<Tab>('list');
   const [modalData, setModalData] = useState<{ university: University } | null>(null);
 
   const uniqueStates = useMemo(() => getUniqueStates(universityData), []);
 
   const filteredUniversities = useMemo(() => {
-    if (selectedStates.length === 0) {
-      return universityData;
+    let universities = universityData;
+
+    if (selectedStates.length > 0) {
+      universities = universities.filter(uni => selectedStates.includes(uni.state));
     }
-    return universityData.filter(uni => selectedStates.includes(uni.state));
-  }, [selectedStates]);
+
+    if (searchTerm) {
+      universities = universities.filter(uni =>
+        uni.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    return universities;
+  }, [selectedStates, searchTerm]);
 
   const handleStateChange = useCallback((state: string) => {
     setSelectedStates(prev =>
@@ -32,8 +42,8 @@ const App: React.FC = () => {
     );
   }, []);
 
-  const clearFilters = useCallback(() => {
-    setSelectedStates([]);
+  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   }, []);
   
   const openModal = useCallback((university: University) => {
@@ -48,11 +58,31 @@ const App: React.FC = () => {
     <div className="bg-gray-900 text-white min-h-screen font-sans flex flex-col md:flex-row md:h-screen md:overflow-hidden">
       <aside className="w-full md:w-72 lg:w-80 bg-gray-900 border-b md:border-b-0 md:border-r border-gray-700 p-4 flex flex-col flex-shrink-0">
         <h1 className="text-2xl font-bold text-cyan-400 mb-6 flex-shrink-0">US University Explorer</h1>
+        
+        <div className="mb-6">
+          <label htmlFor="search-university" className="block text-sm font-medium text-gray-400 mb-2">
+            Search by Name
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <SearchIcon />
+            </div>
+            <input
+              type="text"
+              id="search-university"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="e.g., Stanford"
+              className="w-full bg-gray-800 border border-gray-600 text-white rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+              aria-label="Search by university name"
+            />
+          </div>
+        </div>
+
         <StateFilter
           states={uniqueStates}
           selectedStates={selectedStates}
           onStateChange={handleStateChange}
-          onClear={clearFilters}
         />
       </aside>
 
