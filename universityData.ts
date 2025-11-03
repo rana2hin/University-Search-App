@@ -3033,5 +3033,21 @@ export const universityData: University[] = [
     "longitude": -80.6462799,
     "website": "https://ysu.edu/",
     "state": "Ohio"
+  },
+  {
+  "name": "University of North Florida",
+  "address": "1 UNF Drive, Jacksonville, FL 32224",
+  "latitude": 30.269276,
+  "longitude": -81.508741,
+  "website": "https://www.unf.edu/",
+  "state": "Florida"
+  },
+  {
+  "name": "Georgia Southern University",
+  "address": "1332 Southern Dr, Statesboro, GA 30458, United States",
+  "latitude": 32.4208501,
+  "longitude": -81.7869006,
+  "website": "https://www.georgiasouthern.edu/",
+  "state": "Georgia"
   }
 ];
