@@ -44,14 +44,14 @@ const StateFilter: React.FC<StateFilterProps> = ({ states, selectedStates, onSta
           aria-haspopup="listbox"
           aria-expanded={isOpen}
         >
-          <div className="flex flex-wrap gap-1 items-center flex-1">
+          <div className="flex flex-wrap gap-1.5 items-center flex-1">
             {selectedStates.length > 0 ? (
               selectedStates.map(state => (
-                <span key={state} className="bg-slate-700 text-slate-200 text-sm font-medium px-2 py-0.5 rounded-md flex items-center">
+                <span key={state} className="bg-sky-500/30 text-sky-200 text-sm font-medium px-2 py-1 rounded-lg flex items-center">
                   {state}
                   <button
                     onClick={(e) => handleRemoveState(e, state)}
-                    className="ml-1.5 text-slate-400 hover:text-white"
+                    className="ml-1.5 text-sky-300 hover:text-white"
                     aria-label={`Remove ${state}`}
                   >
                     <XMarkIcon className="w-3 h-3" />
@@ -66,7 +66,7 @@ const StateFilter: React.FC<StateFilterProps> = ({ states, selectedStates, onSta
         </button>
 
         {isOpen && (
-          <div className="absolute z-10 mt-1 w-full bg-slate-800/80 backdrop-blur-sm border border-white/10 rounded-lg shadow-lg">
+          <div className="absolute z-10 mt-1 w-full bg-slate-800/80 backdrop-blur-lg border border-white/10 rounded-lg shadow-lg">
             <div className="p-2">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -77,7 +77,7 @@ const StateFilter: React.FC<StateFilterProps> = ({ states, selectedStates, onSta
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search states..."
-                  className="w-full bg-slate-700 border border-white/10 text-white rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full bg-slate-700 border border-white/10 text-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   aria-label="Search states"
                   aria-controls="state-listbox"
                   autoFocus
@@ -96,7 +96,7 @@ const StateFilter: React.FC<StateFilterProps> = ({ states, selectedStates, onSta
                   onClick={() => onStateChange(state)}
                   role="option"
                   aria-selected={selectedStates.includes(state)}
-                  className={`p-2 rounded-md cursor-pointer text-slate-300 hover:bg-slate-700 transition-colors ${selectedStates.includes(state) ? 'bg-sky-600/30 text-white font-semibold' : ''}`}
+                  className={`p-2 rounded-md cursor-pointer text-slate-300 hover:bg-white/10 transition-colors ${selectedStates.includes(state) ? 'bg-sky-500/40 text-sky-100 font-semibold' : ''}`}
                 >
                   {state}
                 </li>
