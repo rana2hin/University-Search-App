@@ -1,12 +1,5 @@
 import React from 'react';
 
-export const MapIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" shapeRendering="geometricPrecision">
-    <path fillRule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM10 0a1 1 0 011 1v18a1 1 0 01-1.707.707l-6-6A1 1 0 013 13V7a1 1 0 011-1h1V1a1 1 0 011-1h4z" clipRule="evenodd" />
-    <path d="M4 6h1v6H4V6zM15 4a1 1 0 011 1v10.014a1 1 0 01-1.427.9l-3.52-2.347a.5.5 0 00-.553 0L7.427 15.91A1 1 0 016 15.014V5a1 1 0 011-1h8z" />
-  </svg>
-);
-
 export const ListBulletIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" shapeRendering="geometricPrecision">
     <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { University } from '../types';
-import { XMarkIcon, AcademicCapIcon, ClipboardIcon, RefreshIcon } from './icons';
+import { XMarkIcon, SparklesIcon, ClipboardIcon } from './icons';
 import { db } from '../firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
@@ -55,6 +55,12 @@ const tableHeaders = [
     { key: 'state', label: 'State' },
 ];
 
+const loadingMessages = [
+    "Gemini is consulting Google Search...",
+    "Analyzing admission requirements...",
+    "Formatting the data table..."
+];
+
 export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProps> = ({ university, onClose }) => {
   const [data, setData] = useState<AdmissionData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -62,6 +68,27 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
   const [copyStatus, setCopyStatus] = useState('Copy Table');
   const [sources, setSources] = useState<GroundingSource[]>([]);
   const [isCached, setIsCached] = useState(false);
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = useCallback(() => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 300); // Duration should match the animation duration
+  }, [onClose]);
+
+
+  useEffect(() => {
+    // FIX: Changed NodeJS.Timeout to use ReturnType<typeof setInterval> for browser compatibility.
+    let interval: ReturnType<typeof setInterval>;
+    if (isLoading) {
+      interval = setInterval(() => {
+        setLoadingMessageIndex(prevIndex => (prevIndex + 1) % loadingMessages.length);
+      }, 2500);
+    }
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   const fetchAndCacheAdmissionData = useCallback(async () => {
     setIsLoading(true);
@@ -170,14 +197,20 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300" onClick={onClose}>
-      <div className="relative bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col border border-white/10" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-2 right-2 text-slate-400 hover:text-white transition-all duration-150 ease-in-out z-10 p-2 rounded-full hover:bg-slate-700" aria-label="Close modal">
+    <div 
+      className={`fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4 ${isClosing ? 'animate-modal-backdrop-out' : 'animate-modal-backdrop-in'}`}
+      onClick={handleClose}
+    >
+      <div 
+        className={`relative bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col border border-white/10 ${isClosing ? 'animate-modal-content-out' : 'animate-modal-content-in'}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button onClick={handleClose} className="absolute top-2 right-2 text-slate-400 hover:text-white transition-all duration-150 ease-in-out z-10 p-2 rounded-full hover:bg-slate-700" aria-label="Close modal">
             <XMarkIcon />
         </button>
         <header className="flex flex-wrap items-start sm:items-center justify-between gap-x-4 gap-y-3 p-4 pr-12 border-b border-white/10 flex-shrink-0">
           <div className="flex items-center gap-3 min-w-0">
-             <AcademicCapIcon className="w-6 h-6 text-sky-400 flex-shrink-0" />
+             <SparklesIcon className="w-6 h-6 text-sky-400 flex-shrink-0" />
              <h2 className="text-lg font-bold">
                 Admission Requirements for <span className="block sm:inline text-sky-400">{university.name}</span>
              </h2>
@@ -186,7 +219,7 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
           <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto justify-end">
             {data.length > 0 && !isLoading && (
               <button onClick={fetchAndCacheAdmissionData} className="text-sm bg-slate-700 hover:bg-slate-600 text-sky-300 px-3 py-1.5 rounded-lg transition-all duration-150 ease-in-out flex items-center gap-2" aria-label="Search again for admission information">
-                  <RefreshIcon />
+                  <SparklesIcon className="w-5 h-5" />
                   <span>Search Again</span>
               </button>
             )}
@@ -200,74 +233,83 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
         </header>
 
         <div className="p-1 overflow-auto">
-          {isLoading && (
-            <div className="flex flex-col items-center justify-center text-slate-400 h-96">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-400 mb-4"></div>
-              <p>Gemini is searching for admission data...</p>
-              <p className="text-xs mt-2">This may take a moment.</p>
-            </div>
-          )}
+          <div className="grid transition-[grid-template-rows] duration-1000 ease-in-out" style={{ gridTemplateRows: '1fr' }}>
+            <div className="overflow-hidden">
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center text-slate-400 h-full min-h-[400px]">
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-4 h-4 bg-sky-400 rounded-full animate-pulse-dots" style={{ animationDelay: '0s' }}></div>
+                    <div className="w-4 h-4 bg-sky-400 rounded-full animate-pulse-dots" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-4 h-4 bg-sky-400 rounded-full animate-pulse-dots" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                  <p className="mt-6 text-center transition-opacity duration-500">{loadingMessages[loadingMessageIndex]}</p>
+                </div>
+              ) : (
+                <div className="animate-content-in">
+                  {error && (
+                    <div className="m-6 text-center text-yellow-400 bg-yellow-500/10 p-4 rounded-lg">
+                        <p>{error}</p>
+                        <a 
+                            href={`//${university.website}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-2 inline-block font-bold text-sky-400 hover:underline"
+                        >
+                            Visit University Website
+                        </a>
+                    </div>
+                  )}
 
-          {error && !isLoading && (
-             <div className="m-6 text-center text-yellow-400 bg-yellow-500/10 p-4 rounded-lg">
-                <p>{error}</p>
-                 <a 
-                    href={`//${university.website}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-2 inline-block font-bold text-sky-400 hover:underline"
-                 >
-                    Visit University Website
-                 </a>
-            </div>
-          )}
-
-          {!isLoading && !error && data.length > 0 && (
-            <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left text-slate-300">
-                    <thead className="text-xs text-sky-300 uppercase bg-slate-700/50 sticky top-0">
-                        <tr>
-                            {tableHeaders.map(header => (
-                                <th key={header.key} scope="col" className="px-4 py-3 whitespace-nowrap">{header.label}</th>
+                  {!error && data.length > 0 && (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm text-left text-slate-300">
+                            <thead className="text-xs text-sky-300 uppercase bg-slate-700/50 sticky top-0">
+                                <tr>
+                                    {tableHeaders.map(header => (
+                                        <th key={header.key} scope="col" className="px-4 py-3 whitespace-nowrap">{header.label}</th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {data.map((row, rowIndex) => (
+                                  <tr key={rowIndex} className="border-b border-slate-700 hover:bg-slate-700/50">
+                                        {tableHeaders.map(header => (
+                                            <td key={`${rowIndex}-${header.key}`} className="px-4 py-3 whitespace-nowrap">
+                                                {header.key === 'url' ? (
+                                                    row.url && row.url !== 'N/A' ?
+                                                    <a href={!row.url.startsWith('http') ? `//${row.url}`: row.url} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline">
+                                                        Link
+                                                    </a> : 'N/A'
+                                                ) : (
+                                                    row[header.key as keyof AdmissionData] || 'N/A'
+                                                )}
+                                            </td>
+                                        ))}
+                                  </tr>
+                              ))}
+                            </tbody>
+                        </table>
+                    </div>
+                  )}
+                  
+                  {sources.length > 0 && !isLoading && (
+                    <div className="px-6 pb-4 mt-4 border-t border-slate-700 pt-4">
+                        <h4 className="text-sm font-bold text-slate-400 mb-2">Sources</h4>
+                        <ul className="space-y-1 text-xs list-disc list-inside">
+                            {sources.map((source, index) => (
+                                <li key={index} className="truncate">
+                                    <a href={source.web.uri} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline">
+                                        {source.web.title || source.web.uri}
+                                    </a>
+                                </li>
                             ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                       {data.map((row, rowIndex) => (
-                           <tr key={rowIndex} className="border-b border-slate-700 hover:bg-slate-700/50">
-                                {tableHeaders.map(header => (
-                                    <td key={`${rowIndex}-${header.key}`} className="px-4 py-3 whitespace-nowrap">
-                                        {header.key === 'url' ? (
-                                             row.url && row.url !== 'N/A' ?
-                                            <a href={!row.url.startsWith('http') ? `//${row.url}`: row.url} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline">
-                                                Link
-                                            </a> : 'N/A'
-                                        ) : (
-                                            row[header.key as keyof AdmissionData] || 'N/A'
-                                        )}
-                                    </td>
-                                ))}
-                           </tr>
-                       ))}
-                    </tbody>
-                </table>
+                        </ul>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-          )}
-          
-          {sources.length > 0 && (
-            <div className="px-6 pb-4 mt-4 border-t border-slate-700 pt-4">
-                <h4 className="text-sm font-bold text-slate-400 mb-2">Sources</h4>
-                <ul className="space-y-1 text-xs list-disc list-inside">
-                    {sources.map((source, index) => (
-                        <li key={index} className="truncate">
-                            <a href={source.web.uri} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline">
-                                {source.web.title || source.web.uri}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-          )}
+          </div>
         </div>
         <footer className="flex-shrink-0 px-6 py-3 text-center text-xs text-slate-500 border-t border-white/10">
             <p>

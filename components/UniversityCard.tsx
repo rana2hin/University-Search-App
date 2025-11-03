@@ -1,7 +1,7 @@
 import React from 'react';
 import { University, MailingStatus } from '../types';
 import { useLocalTime } from '../hooks/useLocalTime';
-import { ExternalLinkIcon, MapPinIcon, AcademicCapIcon } from './icons';
+import { ExternalLinkIcon, MapPinIcon, SparklesIcon } from './icons';
 
 interface UniversityCardProps {
   university: University;
@@ -74,7 +74,7 @@ const UniversityCard: React.FC<UniversityCardProps> = ({ university, onSearchReq
           onClick={() => onSearchRequirements(university)}
           className={`w-full font-bold py-2 px-4 rounded-lg transition-all duration-150 ease-in-out flex items-center justify-center gap-2 ${color.buttonBg} ${color.buttonHoverBg} ${color.buttonText} ${color.buttonBorder} transform hover:scale-[1.03]`}
         >
-          <AcademicCapIcon />
+          <SparklesIcon className="w-5 h-5" />
           Admission Info
         </button>
       </div>

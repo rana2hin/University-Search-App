@@ -6,7 +6,7 @@ import UniversityCard from './components/UniversityCard';
 import MapView from './components/MapView';
 import { getUniqueStates } from './utils/location';
 import { AdmissionRequirementsModal } from './components/AdmissionRequirementsModal';
-import { MapIcon, ListBulletIcon, SearchIcon, FilterIcon, XMarkIcon, ArrowUpIcon } from './components/icons';
+import { MapPinIcon, ListBulletIcon, SearchIcon, FilterIcon, XMarkIcon, ArrowUpIcon } from './components/icons';
 
 type Tab = 'list' | 'map';
 
@@ -189,7 +189,7 @@ const App: React.FC = () => {
                     />
                     <TabButton
                         label="Map View"
-                        icon={<MapIcon />}
+                        icon={<MapPinIcon />}
                         isActive={activeTab === 'map'}
                         onClick={() => setActiveTab('map')}
                     />
