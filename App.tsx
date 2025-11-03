@@ -197,9 +197,18 @@ const App: React.FC = () => {
 
         <div ref={scrollContainerRef} className="flex-1 overflow-auto rounded-2xl bg-slate-800/50 relative z-0">
           {activeTab === 'list' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4">
-              {filteredUniversities.map(uni => (
-                <UniversityCard key={uni.name} university={uni} onSearchRequirements={openModal} />
+            <div 
+              className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4"
+              key={JSON.stringify(selectedStates) + searchTerm}
+            >
+              {filteredUniversities.map((uni, index) => (
+                <UniversityCard 
+                  key={uni.name} 
+                  university={uni} 
+                  onSearchRequirements={openModal} 
+                  style={{ animationDelay: `${index * 50}ms` }}
+                  className="opacity-0 animate-fade-in-up"
+                />
               ))}
             </div>
           )}
