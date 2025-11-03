@@ -38,11 +38,21 @@ const MapView: React.FC<MapViewProps> = ({ universities }) => {
         }
       });
         
-      // Fit map to markers
+      // Fit map to markers with smoother animation
       const group = L.featureGroup(markers.current);
-      mapInstance.current.fitBounds(group.getBounds().pad(0.1), {maxZoom: 15});
+      mapInstance.current.fitBounds(group.getBounds().pad(0.1), {
+          maxZoom: 15,
+          animate: true,
+          duration: 1.0, // in seconds
+          easeLinearity: 0.3,
+      });
     } else if (mapInstance.current) {
-        mapInstance.current.setView([39.8283, -98.5795], 4); // Reset view if no universities
+        // Reset view with smoother animation
+        mapInstance.current.setView([39.8283, -98.5795], 4, {
+            animate: true,
+            duration: 1.0,
+            easeLinearity: 0.3,
+        });
     }
 
   }, [universities]);
