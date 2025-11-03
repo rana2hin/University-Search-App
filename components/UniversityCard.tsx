@@ -52,7 +52,7 @@ const UniversityCard: React.FC<UniversityCardProps> = ({ university, onSearchReq
         </div>
         <button
           onClick={() => onSearchRequirements(university)}
-          className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2"
+          className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-100 flex items-center justify-center gap-2"
         >
           <AcademicCapIcon />
           Admission Info

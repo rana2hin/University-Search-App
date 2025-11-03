@@ -172,7 +172,7 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
   return (
     <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300" onClick={onClose}>
       <div className="relative bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col border border-white/10" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-2 right-2 text-slate-400 hover:text-white transition-colors z-10 p-2 rounded-full hover:bg-slate-700" aria-label="Close modal">
+        <button onClick={onClose} className="absolute top-2 right-2 text-slate-400 hover:text-white transition-all z-10 p-2 rounded-full hover:bg-slate-700 transform active:scale-95" aria-label="Close modal">
             <XMarkIcon />
         </button>
         <header className="flex flex-wrap items-start sm:items-center justify-between gap-x-4 gap-y-3 p-4 pr-12 border-b border-white/10 flex-shrink-0">
@@ -185,13 +185,13 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
           </div>
           <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto justify-end">
             {data.length > 0 && !isLoading && (
-              <button onClick={fetchAndCacheAdmissionData} className="text-sm bg-slate-700 hover:bg-slate-600 text-sky-300 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2" aria-label="Search again for admission information">
+              <button onClick={fetchAndCacheAdmissionData} className="text-sm bg-slate-700 hover:bg-slate-600 text-sky-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-2 transform active:scale-95" aria-label="Search again for admission information">
                   <RefreshIcon />
                   <span>Search Again</span>
               </button>
             )}
             {data.length > 0 && !isLoading && (
-              <button onClick={handleCopy} className="text-sm bg-slate-700 hover:bg-slate-600 text-sky-300 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2" aria-label="Copy table data">
+              <button onClick={handleCopy} className="text-sm bg-slate-700 hover:bg-slate-600 text-sky-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-2 transform active:scale-95" aria-label="Copy table data">
                   <ClipboardIcon />
                   <span>{copyStatus}</span>
               </button>
