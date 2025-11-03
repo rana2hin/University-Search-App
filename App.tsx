@@ -106,7 +106,7 @@ const App: React.FC = () => {
 
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen font-sans flex flex-col md:flex-row md:h-screen md:overflow-hidden">
+    <div className="bg-gray-900 text-white h-screen font-sans flex flex-col md:flex-row overflow-hidden">
       {/* Backdrop for mobile sidebar */}
       {isSidebarOpen && (
         <div 
@@ -160,7 +160,7 @@ const App: React.FC = () => {
         />
       </aside>
 
-      <main className="flex-1 flex flex-col p-4 md:p-6 relative">
+      <main className="flex-1 flex flex-col p-4 md:p-6 relative min-h-0">
         <header className="flex-shrink-0 mb-4">
           <h1 className="text-xl font-bold text-cyan-400 md:hidden mb-4">US University Explorer</h1>
           <div className="flex items-center justify-between flex-wrap gap-y-2">
@@ -209,7 +209,7 @@ const App: React.FC = () => {
         {activeTab === 'list' && showBackToTop && (
             <button
             onClick={scrollToTop}
-            className="absolute z-20 bottom-6 right-6 md:right-10 bg-cyan-600 hover:bg-cyan-500 text-white p-3 rounded-full shadow-lg transition-opacity duration-300 ease-in-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-cyan-500"
+            className="fixed z-20 bottom-6 right-6 md:right-10 bg-cyan-600 hover:bg-cyan-500 text-white p-3 rounded-full shadow-lg transition-opacity duration-300 ease-in-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-cyan-500"
             aria-label="Back to top"
             >
                 <ArrowUpIcon />
