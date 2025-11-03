@@ -28,9 +28,12 @@ export const useLocalTime = (longitude: number) => {
       const localDate = new Date(utc + (3600000 * utcOffset));
       
       const hours = localDate.getHours();
-      const minutes = localDate.getMinutes();
-
-      const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      
+      // Use toLocaleTimeString with en-GB to ensure 24-hour format.
+      const formattedTime = localDate.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
       const status = getMailingStatus(hours);
       
       setTime({
