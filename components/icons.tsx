@@ -55,8 +55,8 @@ export const SparklesIcon: React.FC<{className?: string}> = ({className}) => (
     </svg>
 );
 
-export const AcademicCapIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+export const AcademicCapIcon: React.FC<{className?: string}> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={className || "w-5 h-5"}>
         <path d="M10.362 1.096a.75.75 0 00-.724 0L1.998 5.44a.75.75 0 00-.498.677v4.103a.75.75 0 00.323.62l7.5 4.5a.75.75 0 00.752 0l7.5-4.5a.75.75 0 00.323-.62V6.117a.75.75 0 00-.498-.677L10.362 1.096zM18 6.534l-7.5 4.5v6.432l7.5-4.5V6.534z" />
         <path d="M12.25 10.385l-1.93-1.158a.75.75 0 00-.64 0l-1.93 1.158-4.32-2.592 7.18-4.308 7.18 4.308-5.54 3.324z" />
     </svg>
@@ -72,5 +72,17 @@ export const ClipboardIcon = () => (
 export const RefreshIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.664 0l3.181-3.183m-11.664 0l3.181-3.183a8.25 8.25 0 00-11.664 0l3.181 3.183" />
+    </svg>
+);
+
+export const FilterIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+    </svg>
+);
+
+export const ArrowUpIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
     </svg>
 );

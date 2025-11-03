@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { universityData } from './universityData';
 import { University } from './types';
 import StateFilter from './components/StateFilter';
@@ -6,7 +6,7 @@ import UniversityCard from './components/UniversityCard';
 import MapView from './components/MapView';
 import { getUniqueStates } from './utils/location';
 import { AdmissionRequirementsModal } from './components/AdmissionRequirementsModal';
-import { MapIcon, ListBulletIcon, SearchIcon } from './components/icons';
+import { MapIcon, ListBulletIcon, SearchIcon, FilterIcon, XMarkIcon, ArrowUpIcon } from './components/icons';
 
 type Tab = 'list' | 'map';
 
@@ -15,6 +15,9 @@ const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<Tab>('list');
   const [modalData, setModalData] = useState<{ university: University } | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   const uniqueStates = useMemo(() => getUniqueStates(universityData), []);
 
@@ -54,10 +57,81 @@ const App: React.FC = () => {
     setModalData(null);
   }, []);
 
+  const scrollToTop = useCallback(() => {
+    scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // Prevent body scroll when sidebar is open on mobile
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    if (isSidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = originalStyle;
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth >= 768) { // md breakpoint
+        setIsSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      document.body.style.overflow = originalStyle;
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isSidebarOpen]);
+
+  // Listener for the back-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollContainerRef.current) {
+        setShowBackToTop(scrollContainerRef.current.scrollTop > 300);
+      }
+    };
+
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
+
   return (
     <div className="bg-gray-900 text-white min-h-screen font-sans flex flex-col md:flex-row md:h-screen md:overflow-hidden">
-      <aside className="w-full md:w-72 lg:w-80 bg-gray-900 border-b md:border-b-0 md:border-r border-gray-700 p-4 flex flex-col flex-shrink-0">
-        <h1 className="text-2xl font-bold text-cyan-400 mb-6 flex-shrink-0">US University Explorer</h1>
+      {/* Backdrop for mobile sidebar */}
+      {isSidebarOpen && (
+        <div 
+            className="fixed inset-0 bg-black/60 z-30 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+            aria-hidden="true"
+        ></div>
+      )}
+
+      <aside 
+        id="filters-sidebar"
+        className={`fixed top-0 left-0 h-full w-72 bg-gray-900 border-r border-gray-700 p-4 flex flex-col z-40
+        md:relative md:h-auto md:w-72 md:lg:w-80 md:flex-shrink-0 md:translate-x-0
+        transition-transform duration-300 ease-in-out
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        role="dialog"
+        aria-modal={isSidebarOpen}
+        aria-label="Filters"
+      >
+        <div className="flex justify-between items-center mb-6 flex-shrink-0">
+          <h1 className="text-2xl font-bold text-cyan-400">US University Explorer</h1>
+          <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-gray-400 hover:text-white" aria-label="Close filters">
+              <XMarkIcon />
+          </button>
+        </div>
         
         <div className="mb-6">
           <label htmlFor="search-university" className="block text-sm font-medium text-gray-400 mb-2">
@@ -86,30 +160,42 @@ const App: React.FC = () => {
         />
       </aside>
 
-      <main className="flex-1 flex flex-col p-4 md:p-6 overflow-hidden">
-        <div className="flex-shrink-0 mb-4">
-          <div className="flex items-center justify-between">
-             <div className="flex bg-gray-800 rounded-lg p-1">
-                <TabButton
-                  label="List View"
-                  icon={<ListBulletIcon />}
-                  isActive={activeTab === 'list'}
-                  onClick={() => setActiveTab('list')}
-                />
-                <TabButton
-                  label="Map View"
-                  icon={<MapIcon />}
-                  isActive={activeTab === 'map'}
-                  onClick={() => setActiveTab('map')}
-                />
+      <main className="flex-1 flex flex-col p-4 md:p-6 overflow-hidden relative">
+        <header className="flex-shrink-0 mb-4">
+          <h1 className="text-xl font-bold text-cyan-400 md:hidden mb-4">US University Explorer</h1>
+          <div className="flex items-center justify-between flex-wrap gap-y-2">
+             <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setIsSidebarOpen(true)} 
+                  className="md:hidden bg-gray-800 p-2 rounded-lg text-gray-300 hover:bg-gray-700 active:bg-gray-600"
+                  aria-label="Open filters"
+                  aria-controls="filters-sidebar"
+                  aria-expanded={isSidebarOpen}
+                >
+                    <FilterIcon />
+                </button>
+                <div className="flex bg-gray-800 rounded-lg p-1">
+                    <TabButton
+                    label="List View"
+                    icon={<ListBulletIcon />}
+                    isActive={activeTab === 'list'}
+                    onClick={() => setActiveTab('list')}
+                    />
+                    <TabButton
+                    label="Map View"
+                    icon={<MapIcon />}
+                    isActive={activeTab === 'map'}
+                    onClick={() => setActiveTab('map')}
+                    />
+                </div>
               </div>
               <div className="text-gray-400 text-sm">
                 Showing {filteredUniversities.length} of {universityData.length} universities
               </div>
           </div>
-        </div>
+        </header>
 
-        <div className="flex-1 overflow-auto rounded-lg bg-gray-800/50">
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto rounded-lg bg-gray-800/50">
           {activeTab === 'list' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4">
               {filteredUniversities.map(uni => (
@@ -119,6 +205,16 @@ const App: React.FC = () => {
           )}
           {activeTab === 'map' && <MapView universities={filteredUniversities} />}
         </div>
+        
+        {activeTab === 'list' && showBackToTop && (
+            <button
+            onClick={scrollToTop}
+            className="absolute z-20 bottom-6 right-6 md:right-10 bg-cyan-600 hover:bg-cyan-500 text-white p-3 rounded-full shadow-lg transition-opacity duration-300 ease-in-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-cyan-500"
+            aria-label="Back to top"
+            >
+                <ArrowUpIcon />
+            </button>
+        )}
       </main>
 
       {modalData && (

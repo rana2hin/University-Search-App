@@ -171,31 +171,31 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="bg-gray-800 rounded-lg shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col border border-gray-600" onClick={(e) => e.stopPropagation()}>
-        <header className="flex items-center justify-between p-4 border-b border-gray-700 flex-shrink-0">
-          <div className="flex items-center gap-3">
-             <AcademicCapIcon />
+      <div className="relative bg-gray-800 rounded-lg shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col border border-gray-600" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-white transition-colors z-10 p-2 rounded-full hover:bg-gray-700" aria-label="Close modal">
+            <XMarkIcon />
+        </button>
+        <header className="flex flex-wrap items-start sm:items-center justify-between gap-x-4 gap-y-3 p-4 pr-12 border-b border-gray-700 flex-shrink-0">
+          <div className="flex items-center gap-3 min-w-0">
+             <AcademicCapIcon className="w-6 h-6 text-cyan-400 flex-shrink-0" />
              <h2 className="text-lg font-bold">
-                Admission Requirements for <span className="text-cyan-400">{university.name}</span>
+                Admission Requirements for <span className="block sm:inline text-cyan-400">{university.name}</span>
              </h2>
-             {isCached && !isLoading && <span className="text-xs bg-gray-700 text-cyan-300 px-2 py-0.5 rounded-full">Cached</span>}
+             {isCached && !isLoading && <span className="text-xs bg-gray-700 text-cyan-300 px-2 py-0.5 rounded-full self-start sm:self-center flex-shrink-0">Cached</span>}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto justify-end">
             {data.length > 0 && !isLoading && (
-              <button onClick={fetchAndCacheAdmissionData} className="text-sm bg-gray-700 hover:bg-gray-600 text-cyan-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2">
+              <button onClick={fetchAndCacheAdmissionData} className="text-sm bg-gray-700 hover:bg-gray-600 text-cyan-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2" aria-label="Search again for admission information">
                   <RefreshIcon />
-                  Search Again
+                  <span>Search Again</span>
               </button>
             )}
             {data.length > 0 && !isLoading && (
-              <button onClick={handleCopy} className="text-sm bg-gray-700 hover:bg-gray-600 text-cyan-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2">
+              <button onClick={handleCopy} className="text-sm bg-gray-700 hover:bg-gray-600 text-cyan-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2" aria-label="Copy table data">
                   <ClipboardIcon />
-                  {copyStatus}
+                  <span>{copyStatus}</span>
               </button>
             )}
-            <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
-              <XMarkIcon />
-            </button>
           </div>
         </header>
 
