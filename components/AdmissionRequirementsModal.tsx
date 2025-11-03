@@ -69,15 +69,6 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
   const [sources, setSources] = useState<GroundingSource[]>([]);
   const [isCached, setIsCached] = useState(false);
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
-  const [isClosing, setIsClosing] = useState(false);
-
-  const handleClose = useCallback(() => {
-    setIsClosing(true);
-    setTimeout(() => {
-      onClose();
-    }, 300); // Duration should match the animation duration
-  }, [onClose]);
-
 
   useEffect(() => {
     // FIX: Changed NodeJS.Timeout to use ReturnType<typeof setInterval> for browser compatibility.
@@ -198,14 +189,14 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
 
   return (
     <div 
-      className={`fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4 ${isClosing ? 'animate-modal-backdrop-out' : 'animate-modal-backdrop-in'}`}
-      onClick={handleClose}
+      className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-modal-backdrop-in"
+      onClick={onClose}
     >
       <div 
-        className={`relative bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col border border-white/10 ${isClosing ? 'animate-modal-content-out' : 'animate-modal-content-in'}`}
+        className="relative bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col border border-white/10 animate-modal-content-in"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={handleClose} className="absolute top-2 right-2 text-slate-400 hover:text-white transition-all duration-150 ease-in-out z-10 p-2 rounded-full hover:bg-slate-700" aria-label="Close modal">
+        <button onClick={onClose} className="absolute top-2 right-2 text-slate-400 hover:text-white transition-all duration-150 ease-in-out z-10 p-2 rounded-full hover:bg-slate-700" aria-label="Close modal">
             <XMarkIcon />
         </button>
         <header className="flex flex-wrap items-start sm:items-center justify-between gap-x-4 gap-y-3 p-4 pr-12 border-b border-white/10 flex-shrink-0">
@@ -233,7 +224,7 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
         </header>
 
         <div className="p-1 overflow-auto">
-          <div className="grid transition-[grid-template-rows] duration-1000 ease-in-out" style={{ gridTemplateRows: '1fr' }}>
+          <div className="grid transition-[grid-template-rows] duration-1000 ease-smooth-out" style={{ gridTemplateRows: '1fr' }}>
             <div className="overflow-hidden">
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center text-slate-400 h-full min-h-[400px]">
