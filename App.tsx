@@ -218,7 +218,11 @@ const App: React.FC = () => {
               ))}
             </div>
           )}
-          {activeTab === 'map' && <MapView universities={filteredUniversities} />}
+          {activeTab === 'map' && (
+            <div className="h-full w-full animate-fade-in">
+                <MapView universities={filteredUniversities} />
+            </div>
+          )}
         </div>
         
         {activeTab === 'list' && showBackToTop && (
