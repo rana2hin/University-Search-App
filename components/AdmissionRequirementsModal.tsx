@@ -170,28 +170,28 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="relative bg-gray-800 rounded-lg shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col border border-gray-600" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-white transition-colors z-10 p-2 rounded-full hover:bg-gray-700" aria-label="Close modal">
+    <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300" onClick={onClose}>
+      <div className="relative bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col border border-white/10" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-2 right-2 text-slate-400 hover:text-white transition-colors z-10 p-2 rounded-full hover:bg-slate-700" aria-label="Close modal">
             <XMarkIcon />
         </button>
-        <header className="flex flex-wrap items-start sm:items-center justify-between gap-x-4 gap-y-3 p-4 pr-12 border-b border-gray-700 flex-shrink-0">
+        <header className="flex flex-wrap items-start sm:items-center justify-between gap-x-4 gap-y-3 p-4 pr-12 border-b border-white/10 flex-shrink-0">
           <div className="flex items-center gap-3 min-w-0">
-             <AcademicCapIcon className="w-6 h-6 text-cyan-400 flex-shrink-0" />
+             <AcademicCapIcon className="w-6 h-6 text-sky-400 flex-shrink-0" />
              <h2 className="text-lg font-bold">
-                Admission Requirements for <span className="block sm:inline text-cyan-400">{university.name}</span>
+                Admission Requirements for <span className="block sm:inline text-sky-400">{university.name}</span>
              </h2>
-             {isCached && !isLoading && <span className="text-xs bg-gray-700 text-cyan-300 px-2 py-0.5 rounded-full self-start sm:self-center flex-shrink-0">Cached</span>}
+             {isCached && !isLoading && <span className="text-xs bg-slate-700 text-sky-300 px-2 py-0.5 rounded-full self-start sm:self-center flex-shrink-0">Cached</span>}
           </div>
           <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto justify-end">
             {data.length > 0 && !isLoading && (
-              <button onClick={fetchAndCacheAdmissionData} className="text-sm bg-gray-700 hover:bg-gray-600 text-cyan-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2" aria-label="Search again for admission information">
+              <button onClick={fetchAndCacheAdmissionData} className="text-sm bg-slate-700 hover:bg-slate-600 text-sky-300 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2" aria-label="Search again for admission information">
                   <RefreshIcon />
                   <span>Search Again</span>
               </button>
             )}
             {data.length > 0 && !isLoading && (
-              <button onClick={handleCopy} className="text-sm bg-gray-700 hover:bg-gray-600 text-cyan-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2" aria-label="Copy table data">
+              <button onClick={handleCopy} className="text-sm bg-slate-700 hover:bg-slate-600 text-sky-300 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2" aria-label="Copy table data">
                   <ClipboardIcon />
                   <span>{copyStatus}</span>
               </button>
@@ -201,21 +201,21 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
 
         <div className="p-1 overflow-auto">
           {isLoading && (
-            <div className="flex flex-col items-center justify-center text-gray-400 h-96">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400 mb-4"></div>
+            <div className="flex flex-col items-center justify-center text-slate-400 h-96">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-400 mb-4"></div>
               <p>Gemini is searching for admission data...</p>
               <p className="text-xs mt-2">This may take a moment.</p>
             </div>
           )}
 
           {error && !isLoading && (
-             <div className="m-6 text-center text-yellow-400 bg-yellow-500/10 p-4 rounded-md">
+             <div className="m-6 text-center text-yellow-400 bg-yellow-500/10 p-4 rounded-lg">
                 <p>{error}</p>
                  <a 
                     href={`//${university.website}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-2 inline-block font-bold text-cyan-400 hover:underline"
+                    className="mt-2 inline-block font-bold text-sky-400 hover:underline"
                  >
                     Visit University Website
                  </a>
@@ -224,8 +224,8 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
 
           {!isLoading && !error && data.length > 0 && (
             <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left text-gray-300">
-                    <thead className="text-xs text-cyan-300 uppercase bg-gray-700/50 sticky top-0">
+                <table className="w-full text-sm text-left text-slate-300">
+                    <thead className="text-xs text-sky-300 uppercase bg-slate-700/50 sticky top-0">
                         <tr>
                             {tableHeaders.map(header => (
                                 <th key={header.key} scope="col" className="px-4 py-3 whitespace-nowrap">{header.label}</th>
@@ -234,12 +234,12 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
                     </thead>
                     <tbody>
                        {data.map((row, rowIndex) => (
-                           <tr key={rowIndex} className="border-b border-gray-700 hover:bg-gray-700/50">
+                           <tr key={rowIndex} className="border-b border-slate-700 hover:bg-slate-700/50">
                                 {tableHeaders.map(header => (
                                     <td key={`${rowIndex}-${header.key}`} className="px-4 py-3 whitespace-nowrap">
                                         {header.key === 'url' ? (
                                              row.url && row.url !== 'N/A' ?
-                                            <a href={!row.url.startsWith('http') ? `//${row.url}`: row.url} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">
+                                            <a href={!row.url.startsWith('http') ? `//${row.url}`: row.url} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline">
                                                 Link
                                             </a> : 'N/A'
                                         ) : (
@@ -255,12 +255,12 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
           )}
           
           {sources.length > 0 && (
-            <div className="px-6 pb-4 mt-4 border-t border-gray-700 pt-4">
-                <h4 className="text-sm font-bold text-gray-400 mb-2">Sources</h4>
+            <div className="px-6 pb-4 mt-4 border-t border-slate-700 pt-4">
+                <h4 className="text-sm font-bold text-slate-400 mb-2">Sources</h4>
                 <ul className="space-y-1 text-xs list-disc list-inside">
                     {sources.map((source, index) => (
                         <li key={index} className="truncate">
-                            <a href={source.web.uri} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">
+                            <a href={source.web.uri} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline">
                                 {source.web.title || source.web.uri}
                             </a>
                         </li>
@@ -269,14 +269,14 @@ export const AdmissionRequirementsModal: React.FC<AdmissionRequirementsModalProp
             </div>
           )}
         </div>
-        <footer className="flex-shrink-0 px-6 py-3 text-center text-xs text-gray-500 border-t border-gray-700">
+        <footer className="flex-shrink-0 px-6 py-3 text-center text-xs text-slate-500 border-t border-white/10">
             <p>
                 AI Search may give incorrect information. Please check in the 
                 <a 
                     href={`//${university.website}`} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="text-cyan-500 hover:underline ml-1"
+                    className="text-sky-400 hover:underline ml-1"
                 >
                     Official Website
                 </a>.

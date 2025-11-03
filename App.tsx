@@ -106,7 +106,7 @@ const App: React.FC = () => {
 
 
   return (
-    <div className="bg-gray-900 text-white h-screen font-sans flex flex-col md:flex-row overflow-hidden">
+    <div className="bg-slate-900 text-slate-100 h-screen font-sans flex flex-col md:flex-row overflow-hidden">
       {/* Backdrop for mobile sidebar */}
       {isSidebarOpen && (
         <div 
@@ -118,7 +118,7 @@ const App: React.FC = () => {
 
       <aside 
         id="filters-sidebar"
-        className={`fixed top-0 left-0 h-full w-72 bg-gray-900 border-r border-gray-700 p-4 flex flex-col z-40
+        className={`fixed top-0 left-0 h-full w-72 bg-slate-900 border-r border-white/10 p-4 flex flex-col z-40
         md:relative md:h-auto md:w-72 md:lg:w-80 md:flex-shrink-0 md:translate-x-0
         transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
@@ -127,14 +127,14 @@ const App: React.FC = () => {
         aria-label="Filters"
       >
         <div className="flex justify-between items-center mb-6 flex-shrink-0">
-          <h1 className="text-2xl font-bold text-cyan-400">US University Explorer</h1>
-          <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-gray-400 hover:text-white" aria-label="Close filters">
+          <h1 className="text-2xl font-bold text-sky-400">US University Explorer</h1>
+          <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-slate-400 hover:text-white" aria-label="Close filters">
               <XMarkIcon />
           </button>
         </div>
         
         <div className="mb-6">
-          <label htmlFor="search-university" className="block text-sm font-medium text-gray-400 mb-2">
+          <label htmlFor="search-university" className="block text-sm font-medium text-slate-400 mb-2">
             Search by Name
           </label>
           <div className="relative">
@@ -147,7 +147,7 @@ const App: React.FC = () => {
               value={searchTerm}
               onChange={handleSearchChange}
               placeholder="e.g., Stanford"
-              className="w-full bg-gray-800 border border-gray-600 text-white rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+              className="w-full bg-slate-800/80 backdrop-blur-sm border border-white/10 text-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
               aria-label="Search by university name"
             />
           </div>
@@ -162,19 +162,19 @@ const App: React.FC = () => {
 
       <main className="flex-1 flex flex-col p-4 md:p-6 relative min-h-0">
         <header className="flex-shrink-0 mb-4">
-          <h1 className="text-xl font-bold text-cyan-400 md:hidden mb-4">US University Explorer</h1>
+          <h1 className="text-xl font-bold text-sky-400 md:hidden mb-4">US University Explorer</h1>
           <div className="flex items-center justify-between flex-wrap gap-y-2">
              <div className="flex items-center gap-2">
                 <button 
                   onClick={() => setIsSidebarOpen(true)} 
-                  className="md:hidden bg-gray-800 p-2 rounded-lg text-gray-300 hover:bg-gray-700 active:bg-gray-600"
+                  className="md:hidden bg-slate-800 p-2 rounded-lg text-slate-300 hover:bg-slate-700 active:bg-slate-600 transition-colors"
                   aria-label="Open filters"
                   aria-controls="filters-sidebar"
                   aria-expanded={isSidebarOpen}
                 >
                     <FilterIcon />
                 </button>
-                <div className="flex bg-gray-800 rounded-lg p-1">
+                <div className="flex bg-slate-800 rounded-xl p-1">
                     <TabButton
                     label="List View"
                     icon={<ListBulletIcon />}
@@ -189,13 +189,13 @@ const App: React.FC = () => {
                     />
                 </div>
               </div>
-              <div className="text-gray-400 text-sm">
+              <div className="text-slate-400 text-sm">
                 Showing {filteredUniversities.length} of {universityData.length} universities
               </div>
           </div>
         </header>
 
-        <div ref={scrollContainerRef} className="flex-1 overflow-auto rounded-lg bg-gray-800/50 relative z-0">
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto rounded-2xl bg-slate-800/50 relative z-0">
           {activeTab === 'list' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4">
               {filteredUniversities.map(uni => (
@@ -209,7 +209,7 @@ const App: React.FC = () => {
         {activeTab === 'list' && showBackToTop && (
             <button
             onClick={scrollToTop}
-            className="fixed z-20 bottom-6 right-6 md:right-10 bg-cyan-600 hover:bg-cyan-500 text-white p-3 rounded-full shadow-lg transition-opacity duration-300 ease-in-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-cyan-500"
+            className="fixed z-20 bottom-6 right-6 md:right-10 bg-sky-600 hover:bg-sky-500 text-white p-3 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-sky-500"
             aria-label="Back to top"
             >
                 <ArrowUpIcon />
@@ -237,10 +237,10 @@ interface TabButtonProps {
 const TabButton: React.FC<TabButtonProps> = ({ label, icon, isActive, onClick }) => (
     <button
         onClick={onClick}
-        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
         isActive
-            ? 'bg-cyan-500 text-white shadow-md'
-            : 'text-gray-300 hover:bg-gray-700'
+            ? 'bg-sky-500 text-white shadow-md'
+            : 'text-slate-300 hover:bg-slate-700'
         }`}
     >
         {icon}

@@ -47,7 +47,7 @@ const MapView: React.FC<MapViewProps> = ({ universities }) => {
 
   }, [universities]);
 
-  return <div ref={mapRef} style={{ height: '100%', width: '100%', borderRadius: '8px' }} />;
+  return <div ref={mapRef} style={{ height: '100%', width: '100%', borderRadius: '1rem' }} />;
 };
 
 export default MapView;
