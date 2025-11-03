@@ -26,14 +26,14 @@ export const universityData: University[] = [
     "website": "www.afit.edu/",
     "state": "Ohio"
   },
-  {
+  /*{
     "name": "American College of Education",
     "address": "101 West Ohio Street, Suite 1200, Indianapolis, Indiana 46204",
     "latitude": 39.7696979,
     "longitude": -86.1602258,
     "website": "www.ace.edu/",
     "state": "Indiana"
-  },
+  },*/
   {
     "name": "American University",
     "address": "4400 Massachusetts Ave NW, Washington, District of Columbia 20016-8001",
