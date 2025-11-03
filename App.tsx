@@ -195,7 +195,7 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        <div ref={scrollContainerRef} className="flex-1 overflow-auto rounded-lg bg-gray-800/50">
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto rounded-lg bg-gray-800/50 relative z-0">
           {activeTab === 'list' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4">
               {filteredUniversities.map(uni => (
