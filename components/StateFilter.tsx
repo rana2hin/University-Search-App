@@ -39,7 +39,7 @@ const StateFilter: React.FC<StateFilterProps> = ({ states, selectedStates, onSta
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full bg-slate-800/80 backdrop-blur-sm border border-white/10 text-white rounded-lg p-2 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-sky-500 min-h-[42px] transition-transform transform active:scale-[0.99]"
+          className="w-full bg-slate-800/80 backdrop-blur-sm border border-white/10 text-white rounded-lg p-2 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-sky-500 min-h-[42px] transition-transform duration-100 ease-out transform active:scale-[0.99]"
           aria-labelledby="state-filter-label"
           aria-haspopup="listbox"
           aria-expanded={isOpen}
@@ -51,7 +51,7 @@ const StateFilter: React.FC<StateFilterProps> = ({ states, selectedStates, onSta
                   {state}
                   <button
                     onClick={(e) => handleRemoveState(e, state)}
-                    className="ml-1.5 text-sky-300 hover:text-white transition-transform transform active:scale-90"
+                    className="ml-1.5 text-sky-300 hover:text-white transition-transform duration-100 ease-out transform active:scale-90"
                     aria-label={`Remove ${state}`}
                   >
                     <XMarkIcon className="w-3 h-3" />
