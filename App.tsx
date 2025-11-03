@@ -118,7 +118,7 @@ const App: React.FC = () => {
 
       <aside 
         id="filters-sidebar"
-        className={`fixed top-0 left-0 h-full w-72 bg-slate-900 border-r border-white/10 p-4 flex flex-col z-40
+        className={`fixed top-0 left-0 h-full w-72 bg-slate-900 border-r border-white/10 p-4 rounded-r-2xl flex flex-col z-40
         md:relative md:h-auto md:w-72 md:lg:w-80 md:flex-shrink-0 md:translate-x-0
         transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
