@@ -160,7 +160,7 @@ const App: React.FC = () => {
         />
       </aside>
 
-      <main className="flex-1 flex flex-col p-4 md:p-6 overflow-hidden relative">
+      <main className="flex-1 flex flex-col p-4 md:p-6 relative">
         <header className="flex-shrink-0 mb-4">
           <h1 className="text-xl font-bold text-cyan-400 md:hidden mb-4">US University Explorer</h1>
           <div className="flex items-center justify-between flex-wrap gap-y-2">
