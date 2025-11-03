@@ -106,7 +106,7 @@ const App: React.FC = () => {
 
 
   return (
-    <div className="bg-slate-900 text-slate-100 h-screen font-sans flex flex-col md:flex-row overflow-hidden">
+    <div className="bg-transparent text-slate-100 h-screen font-sans flex flex-col md:flex-row overflow-hidden">
       {/* Backdrop for mobile sidebar */}
       {isSidebarOpen && (
         <div 
@@ -118,7 +118,7 @@ const App: React.FC = () => {
 
       <aside 
         id="filters-sidebar"
-        className={`fixed top-0 left-0 h-full w-72 bg-slate-900 border-r border-white/10 p-4 rounded-r-2xl flex flex-col z-40
+        className={`fixed top-0 left-0 h-full w-72 bg-slate-800/30 backdrop-blur-lg p-4 rounded-r-2xl flex flex-col z-40
         md:relative md:h-auto md:w-72 md:lg:w-80 md:flex-shrink-0 md:translate-x-0
         transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
@@ -201,7 +201,7 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        <div ref={scrollContainerRef} className="flex-1 overflow-auto rounded-2xl bg-slate-800/50 relative z-0">
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto rounded-2xl bg-slate-800/30 backdrop-blur-lg relative z-0">
           {activeTab === 'list' && (
             <div 
               className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4"
