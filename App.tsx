@@ -106,7 +106,7 @@ const App: React.FC = () => {
 
 
   return (
-    <div className="bg-transparent text-slate-100 h-screen font-sans flex flex-col md:flex-row overflow-hidden">
+    <div className="bg-slate-900 text-slate-100 h-screen font-sans flex flex-col md:flex-row overflow-hidden">
       {/* Backdrop for mobile sidebar */}
       {isSidebarOpen && (
         <div 

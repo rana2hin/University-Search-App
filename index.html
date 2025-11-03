@@ -69,58 +69,6 @@
     </script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <style>
-      .gradient-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: #0f172a; /* bg-slate-900 */
-        overflow: hidden;
-        z-index: -10;
-      }
-
-      .gradient-bg::before,
-      .gradient-bg::after {
-        content: '';
-        position: absolute;
-        width: 50vmax;
-        height: 50vmax;
-        border-radius: 50%;
-        opacity: 0.15;
-        filter: blur(120px);
-        will-change: transform;
-      }
-
-      @keyframes moveBlob1 {
-        0%, 100% { transform: translate(-20%, 10%) scale(1); }
-        25% { transform: translate(30%, -20%) scale(1.2); }
-        50% { transform: translate(50%, 40%) scale(1); }
-        75% { transform: translate(-10%, 30%) scale(0.8); }
-      }
-
-      @keyframes moveBlob2 {
-        0%, 100% { transform: translate(20%, -30%) scale(1); }
-        25% { transform: translate(-40%, 10%) scale(0.8); }
-        50% { transform: translate(-20%, 50%) scale(1.1); }
-        75% { transform: translate(30%, -10%) scale(1); }
-      }
-
-      .gradient-bg::before {
-        background-color: #312e81; /* dark purple */
-        top: 10vh;
-        left: 10vw;
-        animation: moveBlob1 45s infinite ease-in-out;
-      }
-
-      .gradient-bg::after {
-        background-color: #1e3a8a; /* deep blue */
-        bottom: 10vh;
-        right: 10vw;
-        animation: moveBlob2 55s infinite ease-in-out reverse;
-      }
-    </style>
   <script type="importmap">
 {
   "imports": {
@@ -136,7 +84,6 @@
 </script>
 </head>
   <body>
-    <div class="gradient-bg"></div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
