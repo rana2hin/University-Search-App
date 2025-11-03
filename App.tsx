@@ -167,7 +167,7 @@ const App: React.FC = () => {
              <div className="flex items-center gap-2">
                 <button 
                   onClick={() => setIsSidebarOpen(true)} 
-                  className="md:hidden bg-slate-800 p-2 rounded-lg text-slate-300 hover:bg-slate-700 active:bg-slate-600 transition duration-150 ease-in-out transform active:scale-95"
+                  className="md:hidden bg-slate-800 p-2 rounded-lg text-slate-300 hover:bg-slate-700 active:bg-slate-600 transition ease-in-out"
                   aria-label="Open filters"
                   aria-controls="filters-sidebar"
                   aria-expanded={isSidebarOpen}
@@ -218,7 +218,7 @@ const App: React.FC = () => {
         {activeTab === 'list' && showBackToTop && (
             <button
             onClick={scrollToTop}
-            className="fixed z-20 bottom-6 right-6 md:right-10 bg-sky-600 hover:bg-sky-500 text-white p-3 rounded-full shadow-lg transition-all duration-150 ease-in-out transform hover:scale-110 active:scale-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-sky-500"
+            className="fixed z-20 bottom-6 right-6 md:right-10 bg-sky-600 hover:bg-sky-500 text-white p-3 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-sky-500"
             aria-label="Back to top"
             >
                 <ArrowUpIcon />
@@ -246,7 +246,7 @@ interface TabButtonProps {
 const TabButton: React.FC<TabButtonProps> = ({ label, icon, isActive, onClick }) => (
     <button
         onClick={onClick}
-        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 transform active:scale-95 ${
+        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all ${
         isActive
             ? 'bg-sky-500 text-white shadow-md'
             : 'text-slate-300 hover:bg-slate-700'
