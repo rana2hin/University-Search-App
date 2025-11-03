@@ -174,18 +174,24 @@ const App: React.FC = () => {
                 >
                     <FilterIcon />
                 </button>
-                <div className="flex bg-slate-800 rounded-xl p-1">
-                    <TabButton
-                    label="List View"
-                    icon={<ListBulletIcon />}
-                    isActive={activeTab === 'list'}
-                    onClick={() => setActiveTab('list')}
+                <div className="relative flex bg-slate-800 rounded-2xl p-1">
+                    <div
+                        className={`absolute top-1 left-1 w-1/2 h-[calc(100%-8px)] bg-sky-500 rounded-xl shadow-md transition-transform duration-300 ease-in-out transform ${
+                            activeTab === 'map' ? 'translate-x-full' : 'translate-x-0'
+                        }`}
+                        aria-hidden="true"
                     />
                     <TabButton
-                    label="Map View"
-                    icon={<MapIcon />}
-                    isActive={activeTab === 'map'}
-                    onClick={() => setActiveTab('map')}
+                        label="List View"
+                        icon={<ListBulletIcon />}
+                        isActive={activeTab === 'list'}
+                        onClick={() => setActiveTab('list')}
+                    />
+                    <TabButton
+                        label="Map View"
+                        icon={<MapIcon />}
+                        isActive={activeTab === 'map'}
+                        onClick={() => setActiveTab('map')}
                     />
                 </div>
               </div>
@@ -246,10 +252,10 @@ interface TabButtonProps {
 const TabButton: React.FC<TabButtonProps> = ({ label, icon, isActive, onClick }) => (
     <button
         onClick={onClick}
-        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+        className={`relative z-10 flex flex-1 items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap transition-colors duration-300 ${
         isActive
-            ? 'bg-sky-500 text-white shadow-md'
-            : 'text-slate-300 hover:bg-slate-700'
+            ? 'text-white'
+            : 'text-slate-300 hover:text-white'
         }`}
     >
         {icon}
